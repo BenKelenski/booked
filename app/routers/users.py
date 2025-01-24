@@ -1,16 +1,11 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+
+from app.models.user import User
 
 router = APIRouter(
     prefix="/users",
     tags=["users"],
 )
-
-
-class User(BaseModel):
-    id: int | None = None
-    name: str
-
 
 DB = [
     User(name="ben"),

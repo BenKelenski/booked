@@ -1,16 +1,11 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+
+from app.models.book import Book
 
 router = APIRouter(
     prefix="/books",
     tags=["books"],
 )
-
-
-class Book(BaseModel):
-    id: int | None = None
-    title: str
-    author: str
 
 
 DB = [
