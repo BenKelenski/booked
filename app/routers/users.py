@@ -1,27 +1,25 @@
 from fastapi import APIRouter
+from sqlmodel import select
 
-from app.models.user import User
+from app.models.user import User, UserCreate, UserPublic
+from app.dependencies import SessionDep
 
 router = APIRouter(
     prefix="/users",
     tags=["users"],
 )
 
-DB = [
-    User(name="ben"),
-    User(name="megyb"),
-    User(name="lou lou"),
-    User(name="chip"),
-    User(name="libby"),
-]
+
+@router.get("/", response_model=list[UserPublic])
+async def get_all_users(session: SessionDep) -> list[UserPublic]:
+    users = session.exec(select(User)).all()
+    return users
 
 
-@router.get("/")
-async def get_all_users() -> list[User]:
-    return DB
-
-
-@router.post("/")
-async def create_user(user: User) -> User:
-    DB.append(user)
-    return user
+@router.post("/", response_model=UserPublic)
+async def create_user(user: UserCreate, session: SessionDep):
+    db_user = User.model_validate(user)
+    session.add(db_user)
+    session.commit()
+    session.refresh(db_user)
+    return db_user
