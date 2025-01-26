@@ -147,9 +147,9 @@ Distributed under the project_license. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Bluesky - [@benkelenski.bsky.social](https://bsky.app/profile/benkelenski.bsky.social) - benjaminkelenski@gmail.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/BenKelenski/Booked](https://github.com/BenKelenski/Booked)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
