@@ -18,4 +18,6 @@ class BookPublic(BookBase):
     id: int
 
 
-class BookCreate(BookBase): ...
+class BookCreate(BookBase):
+    title: str
+    author: str

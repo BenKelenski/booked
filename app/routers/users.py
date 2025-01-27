@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from sqlmodel import select
 
 from app.models.user import User, UserCreate, UserPublic
@@ -16,10 +16,18 @@ async def get_all_users(session: SessionDep) -> list[UserPublic]:
     return users
 
 
+@router.get("/{user_id}", response_model=UserPublic)
+async def get_user(user_id: int, session: SessionDep):
+    user = session.exec(select(User).where(User.id == user_id)).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
+
 @router.post("/", response_model=UserPublic)
-async def create_user(user: UserCreate, session: SessionDep):
-    db_user = User.model_validate(user)
-    session.add(db_user)
+async def create_user(user_request: UserCreate, session: SessionDep):
+    user = User.model_validate(user_request)
+    session.add(user)
     session.commit()
-    session.refresh(db_user)
-    return db_user
+    session.refresh(user)
+    return user
