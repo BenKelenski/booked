@@ -4,7 +4,6 @@ from app.models.user import User, UserCreate, UserPublic
 
 
 class UserSerivce:
-
     def __init__(self, session: SessionDep):
         self.session = session
 
@@ -14,14 +13,14 @@ class UserSerivce:
     def get_user(self, user_id: int) -> UserPublic | None:
         user = self.session.exec(select(User).where(User.id == user_id)).first()
         return user
-    
+
     def create_user(self, user_create: UserCreate) -> UserPublic:
         user = User.model_validate(user_create)
         self.session.add(user)
         self.session.commit()
         self.session.refresh(user)
         return user
-    
+
     def delete_user(self, user_id: int):
         user = self.session.exec(select(User).where(User.id == user_id)).first()
         if user is None:
