@@ -33,3 +33,12 @@ async def create_collection(collection_request: CollectionCreate, session: Sessi
     session.commit()
     session.refresh(collection)
     return collection
+
+@router.delete("/{collection_id}")
+async def delete_collection(collection_id: int, session: SessionDep):
+    collection = session.exec(select(Collection).where(Collection.id == collection_id)).first()
+    if collection is None:
+        raise HTTPException(status_code=404, detail="Collection not found")
+    session.delete(collection)
+    session.commit()
+    return {"message": "Collection deleted successfully"}
