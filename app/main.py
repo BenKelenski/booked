@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 from app.dependencies import create_db_and_tables
 
-from .routers import books, users
+from .routers import books, users, collections
 
 
 @asynccontextmanager
@@ -14,11 +14,12 @@ async def lifespan(app: FastAPI):
     os.remove("database.db")
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(title="booked", lifespan=lifespan)
 
 
 app.include_router(users.router)
 app.include_router(books.router)
+app.include_router(collections.router)
 
 
 @app.get("/health")
