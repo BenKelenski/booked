@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException
-from sqlmodel import select
+from typing import Annotated
+from fastapi import APIRouter, Depends
 
-from app.models.collection import Collection, CollectionCreate, CollectionPublic
+from app.models.collection import CollectionCreate, CollectionPublic
 from app.dependencies import SessionDep
+from app.services.collections import CollectionService
 
 router = APIRouter(
     prefix="/collections",
@@ -10,38 +11,36 @@ router = APIRouter(
 )
 
 
+def get_collection_service(session: SessionDep):
+    return CollectionService(session)
+
+
 @router.get("/", response_model=list[CollectionPublic])
-async def get_all_collections(session: SessionDep) -> list[Collection]:
-    collections = session.exec(select(Collection)).all()
-    return collections
+async def get_all_collections(
+    collectionService: Annotated[CollectionService, Depends(get_collection_service)],
+) -> list[CollectionPublic]:
+    return collectionService.get_all_collections()
 
 
 @router.get("/{collection_id}", response_model=CollectionPublic)
-async def get_collection(collection_id: int, session: SessionDep):
-    collection = session.exec(
-        select(Collection).where(Collection.id == collection_id)
-    ).first()
-    if collection is None:
-        raise HTTPException(status_code=404, detail="Collection not found")
-    return collection
+async def get_collection(
+    collection_id: int,
+    collectionService: Annotated[CollectionService, Depends(get_collection_service)],
+) -> CollectionPublic:
+    return collectionService.get_collection(collection_id)
 
 
 @router.post("/", response_model=CollectionPublic)
-async def create_collection(collection_request: CollectionCreate, session: SessionDep):
-    collection = Collection.model_validate(collection_request)
-    session.add(collection_request)
-    session.commit()
-    session.refresh(collection)
-    return collection
+async def create_collection(
+    collection_request: CollectionCreate,
+    collectionService: Annotated[CollectionService, Depends(get_collection_service)],
+) -> CollectionPublic:
+    return collectionService.create_collection(collection_request)
 
 
 @router.delete("/{collection_id}")
-async def delete_collection(collection_id: int, session: SessionDep):
-    collection = session.exec(
-        select(Collection).where(Collection.id == collection_id)
-    ).first()
-    if collection is None:
-        raise HTTPException(status_code=404, detail="Collection not found")
-    session.delete(collection)
-    session.commit()
-    return {"message": "Collection deleted successfully"}
+async def delete_collection(
+    collection_id: int,
+    collectionService: Annotated[CollectionService, Depends(get_collection_service)],
+) -> dict[str, str]:
+    return collectionService.delete_collection(collection_id)
