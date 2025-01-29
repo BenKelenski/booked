@@ -33,7 +33,7 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a> -->
 
-<h1 align="center">Booked</h1>
+<h1 align="center">booked</h1>
 
   <p align="center">
     project_description
