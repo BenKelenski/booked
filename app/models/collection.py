@@ -1,6 +1,6 @@
 from sqlmodel import Field, SQLModel
 
-from app.utils.utils import getTimestampUTC
+from app.utils.utils import get_timestamp_utc
 
 
 class CollectionBase(SQLModel):
@@ -8,7 +8,7 @@ class CollectionBase(SQLModel):
     user_id: int
     description: str
     is_private: bool
-    created_ts: str = getTimestampUTC()
+    created_ts: str = get_timestamp_utc()
 
 
 class Collection(CollectionBase, table=True):
@@ -20,7 +20,7 @@ class CollectionPublic(CollectionBase):
     name: str
     description: str
     is_private: bool
-    created_ts: str = getTimestampUTC()
+    created_ts: str = get_timestamp_utc()
 
 
 class CollectionCreate(CollectionBase):
