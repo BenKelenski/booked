@@ -2,6 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from app.models.user import UserCreate, UserPublic
+from app.repositiories.users_repo import UserRepository
 from app.services.users import UserSerivce
 from app.dependencies import SessionDep
 
@@ -12,7 +13,7 @@ router = APIRouter(
 
 
 def get_user_serivce(session: SessionDep) -> UserSerivce:
-    return UserSerivce(session)
+    return UserSerivce(UserRepository(session))
 
 
 @router.get("/", response_model=list[UserPublic])
