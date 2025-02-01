@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from app.models.user import UserCreate, UserPublic
-from app.repositiories.users_repo import UserRepository
+from app.repositories.users_repo import UserRepository
 from app.services.users import UserSerivce
 from app.dependencies import SessionDep
 

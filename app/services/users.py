@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from app.models.user import User, UserCreate, UserPublic
-from app.repositiories.users_repo import UserRepository
+from app.repositories.users_repo import UserRepository
 from app.utils.utils import hash_and_salt_password
 
 
