@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlmodel import select
 from app.dependencies import SessionDep
-from app.models.book import Book, BookCreate, BookPublic
+from app.models.book import Book, BookCreate, BookPublic, BookPublicWithCollection
 
 
 class BookService:
@@ -11,7 +11,7 @@ class BookService:
     def get_all_books(self) -> list[BookPublic]:
         return self.session.exec(select(Book)).all()
 
-    def get_book(self, book_id: int) -> BookPublic | None:
+    def get_book(self, book_id: int) -> BookPublicWithCollection | None:
         book = self.session.exec(select(Book).where(Book.id == book_id)).first()
         if book is None:
             raise HTTPException(status_code=404, detail="Book not found")

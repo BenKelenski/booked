@@ -1,7 +1,12 @@
 from fastapi import HTTPException
 from sqlmodel import select
 from app.dependencies import SessionDep
-from app.models.collection import Collection, CollectionCreate, CollectionPublic
+from app.models.collection import (
+    Collection,
+    CollectionCreate,
+    CollectionPublic,
+    CollectionPublicWithBooks,
+)
 
 
 class CollectionService:
@@ -11,7 +16,7 @@ class CollectionService:
     def get_all_collections(self) -> list[CollectionPublic]:
         return self.session.exec(select(Collection)).all()
 
-    def get_collection(self, collection_id: int) -> CollectionPublic | None:
+    def get_collection(self, collection_id: int) -> CollectionPublicWithBooks | None:
         collection = self.session.exec(
             select(Collection).where(Collection.id == collection_id)
         ).first()

@@ -1,7 +1,11 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends
 
-from app.models.collection import CollectionCreate, CollectionPublic
+from app.models.collection import (
+    CollectionCreate,
+    CollectionPublic,
+    CollectionPublicWithBooks,
+)
 from app.dependencies import SessionDep
 from app.services.collections import CollectionService
 
@@ -22,7 +26,7 @@ async def get_all_collections(
     return collectionService.get_all_collections()
 
 
-@router.get("/{collection_id}", response_model=CollectionPublic)
+@router.get("/{collection_id}", response_model=CollectionPublicWithBooks)
 async def get_collection(
     collection_id: int,
     collectionService: Annotated[CollectionService, Depends(get_collection_service)],
@@ -38,7 +42,7 @@ async def create_collection(
     return collectionService.create_collection(collection_request)
 
 
-@router.delete("/{collection_id}")
+@router.delete("/{collection_id}", response_model=dict[str, str])
 async def delete_collection(
     collection_id: int,
     collectionService: Annotated[CollectionService, Depends(get_collection_service)],
