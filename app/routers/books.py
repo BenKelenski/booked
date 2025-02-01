@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends
 
 from app.models.book import BookCreate, BookPublic, BookPublicWithCollection
 from app.dependencies import SessionDep
+from app.repositories.books_repo import BookRepository
 from app.services.books import BookService
 
 router = APIRouter(
@@ -12,7 +13,7 @@ router = APIRouter(
 
 
 def get_book_service(session: SessionDep):
-    return BookService(session)
+    return BookService(BookRepository(session))
 
 
 @router.get("/", response_model=list[BookPublic])
