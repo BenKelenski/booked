@@ -29,5 +29,5 @@ class UserSerivce:
         user = self.user_repo.get_user(user_id)
         if user is None:
             return {"message": "User not found"}
-        self.user_repo.delete_user(user_id)
+        self.user_repo.delete_user(user)
         return {"message": "User deleted successfully"}
