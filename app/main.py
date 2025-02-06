@@ -23,5 +23,5 @@ app.include_router(collections.router)
 
 
 @app.get("/health")
-async def health_check() -> list[str, str]:
+async def health_check() -> dict[str, str]:
     return {"status": "ok"}
