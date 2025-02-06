@@ -7,6 +7,7 @@ from app.models.collection import (
     CollectionPublicWithBooks,
 )
 from app.dependencies import SessionDep
+from app.repositories.collection_repo import CollectionRepository
 from app.services.collections import CollectionService
 
 router = APIRouter(
@@ -16,7 +17,7 @@ router = APIRouter(
 
 
 def get_collection_service(session: SessionDep):
-    return CollectionService(session)
+    return CollectionService(CollectionRepository(session))
 
 
 @router.get("/", response_model=list[CollectionPublic])
