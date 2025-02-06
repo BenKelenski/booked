@@ -83,7 +83,7 @@ def test_get_user(session: Session, client: TestClient):
     assert data["created_ts"] is not None
 
 
-def test_delete_user(session, client: TestClient):
+def test_delete_user(session: Session, client: TestClient):
     user_1 = User(name="ben", hashed_password="secretpassword".encode())
     session.add(user_1)
     session.commit()
@@ -93,5 +93,4 @@ def test_delete_user(session, client: TestClient):
     user_in_db = session.get(User, user_1.id)
 
     assert response.status_code == 200
-
     assert user_in_db is None
