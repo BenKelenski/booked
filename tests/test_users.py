@@ -82,6 +82,7 @@ def test_get_user(session: Session, client: TestClient):
     assert data["id"] is not None
     assert data["name"] == user_1.name
     assert data["created_ts"] is not None
+    assert data["collections"] == []
 
 
 def test_delete_user(session: Session, client: TestClient):

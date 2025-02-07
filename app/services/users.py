@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from app.models.user import User, UserCreate, UserPublic
+from app.models.user import User, UserCreate, UserPublic, UserPublicWithCollections
 from app.repositories.users_repo import UserRepository
 from app.utils.utils import hash_and_salt_password
 
@@ -11,7 +11,7 @@ class UserSerivce:
     def get_all_users(self) -> list[UserPublic]:
         return self.user_repo.get_all_users()
 
-    def get_user(self, user_id: int) -> UserPublic | None:
+    def get_user(self, user_id: int) -> UserPublicWithCollections | None:
         user = self.user_repo.get_user(user_id)
         if user is None:
             raise HTTPException(status_code=404, detail="User not found")

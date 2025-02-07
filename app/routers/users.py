@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends
 
-from app.models.user import UserCreate, UserPublic
+from app.models.user import UserCreate, UserPublic, UserPublicWithCollections
 from app.repositories.users_repo import UserRepository
 from app.services.users import UserSerivce
 from app.dependencies import SessionDep
@@ -23,7 +23,7 @@ async def get_all_users(
     return userService.get_all_users()
 
 
-@router.get("/{user_id}", response_model=UserPublic)
+@router.get("/{user_id}", response_model=UserPublicWithCollections)
 async def get_user(
     user_id: int, userService: Annotated[UserSerivce, Depends(get_user_serivce)]
 ) -> UserPublic:
