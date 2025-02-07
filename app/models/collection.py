@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class CollectionBase(SQLModel):
     name: str
-    description: str
+    description: str | None = Field(default=None)
     is_private: bool
     created_ts: str = get_timestamp_utc()
     user_id: int = Field(foreign_key="user.id")
@@ -21,7 +21,7 @@ class Collection(CollectionBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
     user: "User" = Relationship(back_populates="collections")
-    books: list["Book"] = Relationship(back_populates="collection")
+    books: list["Book"] = Relationship(back_populates="collection", cascade_delete=True)
 
 
 class CollectionPublic(CollectionBase):
@@ -31,8 +31,8 @@ class CollectionPublic(CollectionBase):
 class CollectionCreate(CollectionBase):
     user_id: int
     name: str
-    description: str
-    is_private: bool
+    description: str | None = None
+    is_private: bool = False
 
 
 class CollectionPublicWithBooks(CollectionPublic):
