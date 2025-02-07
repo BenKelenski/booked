@@ -33,7 +33,7 @@ def test_create_collection(session: Session, client: TestClient):
     session.commit()
 
     response = client.post(
-        "/collections/", json={"name": "testCollection", "user_id":1}
+        "/collections/", json={"name": "testCollection", "user_id": 1}
     )
 
     data = response.json()
@@ -47,9 +47,7 @@ def test_create_collection(session: Session, client: TestClient):
 
 
 def test_create_collection_incomplete(client: TestClient):
-    response = client.post(
-        "/collections/", json={"name": "testCollection"}
-    )
+    response = client.post("/collections/", json={"name": "testCollection"})
     assert response.status_code == 422
 
 

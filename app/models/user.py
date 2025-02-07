@@ -3,7 +3,7 @@ from sqlmodel import Field, Relationship, SQLModel
 
 from app.utils.utils import get_timestamp_utc
 
-if  TYPE_CHECKING:
+if TYPE_CHECKING:
     from app.models.collection import Collection
 
 
@@ -32,4 +32,4 @@ class UserPublicWithCollections(UserPublic):
     collections: list["CollectionPublic"] = []
 
 
-from app.models.collection import CollectionPublic #noqa
+from app.models.collection import CollectionPublic  # noqa
