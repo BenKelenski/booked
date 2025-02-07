@@ -38,7 +38,7 @@ def test_create_user(client: TestClient):
     assert data["id"] is not None
     assert data["name"] == "ben"
     assert data["created_ts"] is not None
- 
+
 
 def test_create_user_incomplete(client: TestClient):
     response = client.post("/users/", json={"name": "benNoPass"})
@@ -68,7 +68,8 @@ def test_get_all_users(session: Session, client: TestClient):
     assert data[1]["id"] is not None
     assert data[1]["name"] == user_2.name
     assert data[1]["created_ts"] is not None
-    
+
+
 def test_get_user(session: Session, client: TestClient):
     user_1 = User(name="ben", hashed_password="secretpassword".encode())
     session.add(user_1)

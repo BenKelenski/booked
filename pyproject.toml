@@ -25,7 +25,7 @@ pytest = "^8.3.4"
 
 [tool.poe.tasks]
 run = "poetry run fastapi dev app/main.py"
-lint = "poetry run ruff check app"
-lint-fix = "poetry run ruff check app --fix"
-format = "poetry run ruff format app"
+lint = "poetry run ruff check"
+lint-fix = "poetry run ruff check --fix"
+format = "poetry run ruff format"
 
