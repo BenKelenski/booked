@@ -1,7 +1,12 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends
 
-from app.models.user import UserCreate, UserPublic, UserPublicWithCollections
+from app.models.user import (
+    UserCreate,
+    UserPublic,
+    UserPublicWithCollections,
+    UserUpdate,
+)
 from app.repositories.users_repo import UserRepository
 from app.services.users import UserSerivce
 from app.dependencies import SessionDep
@@ -36,6 +41,15 @@ async def create_user(
     userService: Annotated[UserSerivce, Depends(get_user_serivce)],
 ) -> UserPublic:
     return userService.create_user(user_request)
+
+
+@router.patch("/{user_id}", response_model=UserPublic)
+def update_user(
+    user_id: int,
+    user_update: UserUpdate,
+    userService: Annotated[UserSerivce, Depends(get_user_serivce)],
+) -> UserPublic:
+    return userService.update_user(user_id, user_update)
 
 
 @router.delete("/{user_id}")

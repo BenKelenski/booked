@@ -8,12 +8,22 @@ if TYPE_CHECKING:
 
 
 class UserBase(SQLModel):
-    name: str
+    name: str = Field(default=None, min_length=1, max_length=255)
+    is_active: bool = True
+    is_admin: bool = False
     created_ts: str = get_timestamp_utc()
 
 
+class UserCreate(UserBase):
+    password: str = Field(min_length=8, max_length=40)
+
+
+class UserUpdate(UserBase):
+    name: str | None = Field(default=None, min_length=1, max_length=255)
+    password: str | None = Field(default=None, min_length=8, max_length=40)
+
+
 class User(UserBase, table=True):
-    # id: uuid = Field(default_factory=uuid.uuid4, primary_key=True)
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: bytes = Field()
 
@@ -22,10 +32,6 @@ class User(UserBase, table=True):
 
 class UserPublic(UserBase):
     id: int
-
-
-class UserCreate(UserBase):
-    password: str
 
 
 class UserPublicWithCollections(UserPublic):

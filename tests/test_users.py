@@ -85,6 +85,21 @@ def test_get_user(session: Session, client: TestClient):
     assert data["collections"] == []
 
 
+def test_update_user(session: Session, client: TestClient):
+    user_1 = User(name="ben", hashed_password="secretpassword".encode())
+    session.add(user_1)
+    session.commit()
+
+    response = client.patch(
+        f"/users/{user_1.id}", json={"name": "benjamin", "password": "newpassword"}
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["id"] is not None
+    assert data["name"] == "benjamin"
+    assert data["created_ts"] is not None
+
 def test_delete_user(session: Session, client: TestClient):
     user_1 = User(name="ben", hashed_password="secretpassword".encode())
     session.add(user_1)
