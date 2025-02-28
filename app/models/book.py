@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 class BookBase(SQLModel):
     title: str
     author: str
-    created_ts: str = get_timestamp_utc()
+    collected_ts: str = get_timestamp_utc()
 
     collection_id: int = Field(foreign_key="collection.id")
 
