@@ -30,23 +30,30 @@ def client_fixture(session: Session):
 
 def test_create_user(client: TestClient):
     response = client.post(
-        "/users/", json={"name": "ben", "password": "$up3rS3cretP4ss"}
+        "/users", json={"name": "ben", "password": "$up3rS3cretP4ss"}
     )
     data = response.json()
 
     assert response.status_code == 200
     assert data["id"] is not None
     assert data["name"] == "ben"
+    assert data["is_active"] is True
+    assert data["is_admin"] is False
     assert data["created_ts"] is not None
 
 
 def test_create_user_incomplete(client: TestClient):
-    response = client.post("/users/", json={"name": "benNoPass"})
+    response = client.post("/users", json={"name": "benNoPass"})
     assert response.status_code == 422
 
 
 def test_create_user_invalid(client: TestClient):
-    response = client.post("/users/", json={"name": "benBadType", "password": True})
+    response = client.post("/users", json={"name": "benBadType", "password": True})
+    assert response.status_code == 422
+
+
+def test_create_user_invalid_short_password(client: TestClient):
+    response = client.post("/users", json={"name": "ben", "password": "short"})
     assert response.status_code == 422
 
 
@@ -57,16 +64,20 @@ def test_get_all_users(session: Session, client: TestClient):
     session.add(user_2)
     session.commit()
 
-    response = client.get("/users/")
+    response = client.get("/users")
     data = response.json()
 
     assert response.status_code == 200
     assert len(data) == 2
-    assert data[0]["id"] is not None
+    assert data[0]["id"] == user_1.id
     assert data[0]["name"] == user_1.name
+    assert data[0]["is_active"] is True
+    assert data[0]["is_admin"] is False
     assert data[0]["created_ts"] is not None
-    assert data[1]["id"] is not None
+    assert data[1]["id"] == user_2.id
     assert data[1]["name"] == user_2.name
+    assert data[1]["is_active"] is True
+    assert data[1]["is_admin"] is False
     assert data[1]["created_ts"] is not None
 
 
@@ -79,13 +90,29 @@ def test_get_user(session: Session, client: TestClient):
     data = response.json()
 
     assert response.status_code == 200
-    assert data["id"] is not None
+    assert data["id"] == user_1.id
     assert data["name"] == user_1.name
+    assert data["is_active"] is True
+    assert data["is_admin"] is False
     assert data["created_ts"] is not None
     assert data["collections"] == []
 
 
-def test_update_user(session: Session, client: TestClient):
+def test_update_user_name(session: Session, client: TestClient):
+    user_1 = User(name="ben", hashed_password="secretpassword".encode())
+    session.add(user_1)
+    session.commit()
+
+    response = client.patch(f"/users/{user_1.id}", json={"name": "benjamin"})
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["id"] == user_1.id
+    assert data["name"] == "benjamin"
+    assert data["created_ts"] is not None
+
+
+def test_update_user_password(session: Session, client: TestClient):
     user_1 = User(name="ben", hashed_password="secretpassword".encode())
     session.add(user_1)
     session.commit()
@@ -96,9 +123,10 @@ def test_update_user(session: Session, client: TestClient):
     data = response.json()
 
     assert response.status_code == 200
-    assert data["id"] is not None
+    assert data["id"] == user_1.id
     assert data["name"] == "benjamin"
     assert data["created_ts"] is not None
+
 
 def test_delete_user(session: Session, client: TestClient):
     user_1 = User(name="ben", hashed_password="secretpassword".encode())
