@@ -101,18 +101,9 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This project was written with Python 3.13.1 downloaded from [Python.org](https://www.python.org/)
-
-Python Poetry is used for dependency management
-* [poetry](https://python-poetry.org/)
-  ```sh
-  pipx install poetry
-  ```
-Poe the Poet is used to run custom tasks with Poetry
-* [Poe the Poet](https://poethepoet.natn.io/index.html#)
-  ```sh
-  pipx install poethepoet
-  ```
+This project was written with Python 3.13 downloaded from [Python.org](https://www.python.org/)
+ 
+1. [Install uv](https://github.com/astral-sh/uv?tab=readme-ov-file#installation)
 
 ### Installation
 
