@@ -1,17 +1,28 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
-import './App.css'
 import Account from './pages/Account'
+import SignUp from './pages/SignUp'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 
-function App() {
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#30C5FF',
+    },
+  },
+})
 
+export default function App() {
   return (
-    <BrowserRouter>
-    <Routes>
-      {/* <Route path="/" element={<Home />} /> */}
-      <Route path="account" element={<Account />} />
-    </Routes>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<SignUp />} />
+          <Route path="account" element={<Account />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
-
-export default App
