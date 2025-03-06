@@ -1,26 +1,24 @@
 import * as React from 'react'
 import {
-  Box,
   Button,
   Card,
   Container,
   Divider,
   FormControl,
-  IconButton,
   Stack,
   TextField,
   Typography,
 } from '@mui/material'
 import {
-  AppleIcon,
   ColoredAppleIcon,
   ColoredFacebookIcon,
   ColoredGoogleIcon,
-  FacebookIcon,
-  GoogleIcon,
 } from '../components/CustomIcons'
+import { useNavigate } from 'react-router'
 
 const SignUp = () => {
+  let navigate = useNavigate()
+
   const [nameError, setNameError] = React.useState(false)
   const [nameErrorMessage, setNameErrorMessage] = React.useState('')
   const [emailError, setEmailError] = React.useState(false)
@@ -28,11 +26,11 @@ const SignUp = () => {
   const [passwordError, setPasswordError] = React.useState(false)
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('')
 
-  const validateInputs = () => {
-    const name = document.getElementById('name') as HTMLInputElement
-    const email = document.getElementById('email') as HTMLInputElement
-    const password = document.getElementById('password') as HTMLInputElement
-
+  const validateInputs = (
+    name: HTMLInputElement,
+    email: HTMLInputElement,
+    password: HTMLInputElement
+  ) => {
     let isValid = true
 
     if (!name.value || name.value.length <= 4) {
@@ -53,6 +51,33 @@ const SignUp = () => {
       setPasswordErrorMessage(
         'Password is required and must be at least 8 characters'
       )
+    }
+
+    return isValid
+  }
+
+  const handleSignUp = async () => {
+    const name = document.getElementById('name') as HTMLInputElement
+    const email = document.getElementById('email') as HTMLInputElement
+    const password = document.getElementById('password') as HTMLInputElement
+    if (validateInputs(name, email, password)) {
+      const response = await fetch('http://localhost:8000/users/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: name.value, password: password.value }),
+      })
+
+      if (!response.ok) {
+        console.error('Error creating user')
+      } else {
+        console.log('User successfully created')
+        const data = await response.json()
+        console.log(data)
+        navigate('/')
+      }
     }
   }
 
@@ -148,7 +173,7 @@ const SignUp = () => {
               type='submit'
               size='large'
               variant='contained'
-              onClick={validateInputs}
+              onClick={handleSignUp}
             >
               Submit
             </Button>
