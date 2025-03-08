@@ -26,7 +26,12 @@ const NavBar = ({ title, isLoggedIn, username }: Props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }} color='primary'>
+          <Typography
+            variant='h6'
+            component='div'
+            sx={{ flexGrow: 1 }}
+            color='primary'
+          >
             {title}
           </Typography>
           <Button color='primary'>{isLoggedIn ? username : 'Login'}</Button>

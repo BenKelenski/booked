@@ -19,9 +19,9 @@ export default function App() {
       <CssBaseline />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Account />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="account" element={<Account />} />
+          <Route path='/' element={<Account />} />
+          <Route path='signup' element={<SignUp />} />
+          <Route path='account' element={<Account />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

@@ -1,20 +1,13 @@
-import {
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  Grid2 as Grid,
-  Typography,
-} from '@mui/material'
+import { Container, Divider, Grid2 as Grid, Typography } from '@mui/material'
 
-import NavBar from '../components/NavBar'
 import AddCollectionCard from '../components/AddCollectionCard'
 import CollectionCard from '../components/CollectionCard'
+import NavBar from '../components/NavBar'
 
 const Account = () => {
   return (
     <Container>
-      <NavBar title='Account' isLoggedIn={false}/>
+      <NavBar title='Account' isLoggedIn={false} />
       <Grid
         container
         direction='column'
@@ -39,16 +32,15 @@ const Account = () => {
               alignItems: 'center',
             }}
             columns={{ xs: 4, sm: 8, md: 12, lg: 12 }}
-            // columnSpacing={2}
           >
             <Grid size={4}>
-              <CollectionCard title='Reading' count={5}/>
+              <CollectionCard title='Reading' count={5} />
             </Grid>
             <Grid size={4}>
-              <CollectionCard title='Want to read' count={3}/>
+              <CollectionCard title='Want to read' count={3} />
             </Grid>
             <Grid size={4}>
-              <CollectionCard title='Read' count={10}/>
+              <CollectionCard title='Read' count={10} />
             </Grid>
             <Grid size={4}>
               <AddCollectionCard />
