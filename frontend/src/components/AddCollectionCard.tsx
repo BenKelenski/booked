@@ -8,9 +8,13 @@ import {
   Typography,
 } from '@mui/material'
 
-const AddCollectionCard = () => {
+interface Props {
+  openCreateModal: () => void
+}
+
+const AddCollectionCard = ({openCreateModal}: Props) => {
   const handleCreateCollection = () => {
-    console.log('Create new collection')
+    openCreateModal()
   }
 
   return (

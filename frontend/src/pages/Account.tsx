@@ -1,12 +1,54 @@
-import { Container, Divider, Grid2 as Grid, Typography } from '@mui/material'
+import { useState } from 'react'
+import {
+  Box,
+  Container,
+  Divider,
+  Grid2 as Grid,
+  Modal,
+  TextField,
+  Typography,
+} from '@mui/material'
 
 import AddCollectionCard from '../components/AddCollectionCard'
 import CollectionCard from '../components/CollectionCard'
 import NavBar from '../components/NavBar'
 
+
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+
 const Account = () => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+
+  const openCreateModal = () => {
+    setIsCreateModalOpen(true)
+  }
+
   return (
     <Container>
+      <Modal
+        open={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        aria-labelledby='create-collection-modal'
+        aria-describedby='create-collection-modal'
+      >
+        <Box sx={modalStyle}>
+          <Typography variant='h6' component='h2'>
+            Enter collection name
+          </Typography>
+          <TextField id="collection-name-input" label="New Collection" variant="standard" />
+        </Box>
+      </Modal>
       <NavBar title='Account' isLoggedIn={false} />
       <Grid
         container
@@ -43,7 +85,7 @@ const Account = () => {
               <CollectionCard title='Read' count={10} />
             </Grid>
             <Grid size={4}>
-              <AddCollectionCard />
+              <AddCollectionCard openCreateModal={openCreateModal}/>
             </Grid>
           </Grid>
         </Grid>
