@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 class UserBase(SQLModel):
-    name: str = Field(default=None, min_length=1, max_length=255)
+    name: str = Field(default=None, min_length=1, max_length=40)
     is_active: bool = True
     is_admin: bool = False
     created_ts: str = get_timestamp_utc()
