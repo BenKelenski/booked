@@ -31,7 +31,9 @@ CREATE TABLE collections (
 );
 
 INSERT INTO collections (name, description, user_id)
-VALUES  ('My Collection', 'This is my collection', 1),
+VALUES  ('Reading', 'Books I''m currently reading', 1),
+        ('Want To Read', 'Collection of books I plan to read', 1),
+        ('Read', 'Books I''ve already finished', 1),
         ('Megan''s Collection', 'This is Megan''s collection', 2),
         ('Chip''s Collection', 'This is Chip''s collection', 3),
         ('Libby''s Collection', 'This is Libby''s collection', 4),
