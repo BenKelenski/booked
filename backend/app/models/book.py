@@ -2,8 +2,6 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
-from app.utils.utils import get_timestamp_utc
-
 if TYPE_CHECKING:
     from app.models.collection import Collection, CollectionPublic
 

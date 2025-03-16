@@ -1,5 +1,4 @@
 from contextlib import asynccontextmanager
-import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,10 +16,11 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="booked", lifespan=lifespan)
 
 app.add_middleware(
-    CORSMiddleware,allow_origins=["*"],
+    CORSMiddleware,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
 
 
