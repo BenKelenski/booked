@@ -3,11 +3,10 @@ from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlmodel import SQLModel, Session
 
-sqlite_file_name = "database.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
+db_connection_url = f"postgresql://postgres:password@localhost:5432/test_db"
 
 connect_args = {"check_same_thread": False}
-engine = create_engine(sqlite_url, connect_args=connect_args)
+engine = create_engine(db_connection_url)
 
 
 def create_db_and_tables():

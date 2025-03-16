@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import TYPE_CHECKING
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -13,11 +14,12 @@ class CollectionBase(SQLModel):
     name: str
     description: str | None = Field(default=None)
     is_private: bool
-    created_ts: str = get_timestamp_utc()
-    user_id: int = Field(foreign_key="user.id")
+    created_ts: datetime = Field(default_factory=datetime.now, nullable=False)
+    user_id: int = Field(foreign_key="users.id")
 
 
 class Collection(CollectionBase, table=True):
+    __tablename__ = "collections"
     id: int | None = Field(default=None, primary_key=True)
 
     user: "User" = Relationship(back_populates="collections")

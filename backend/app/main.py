@@ -12,7 +12,6 @@ from .routers import books, users, collections
 async def lifespan(app: FastAPI):
     create_db_and_tables()
     yield
-    os.remove("database.db")
 
 
 app = FastAPI(title="booked", lifespan=lifespan)

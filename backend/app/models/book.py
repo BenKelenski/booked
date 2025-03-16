@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -10,12 +11,13 @@ if TYPE_CHECKING:
 class BookBase(SQLModel):
     title: str
     author: str
-    collected_ts: str = get_timestamp_utc()
+    collected_ts: datetime = Field(default_factory=datetime.now, nullable=False)
 
-    collection_id: int = Field(foreign_key="collection.id")
+    collection_id: int = Field(foreign_key="collections.id")
 
 
 class Book(BookBase, table=True):
+    __tablename__ = "books"
     id: int | None = Field(default=None, primary_key=True)
 
     collection: "Collection" = Relationship(back_populates="books")
