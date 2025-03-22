@@ -8,8 +8,8 @@ import MenuIcon from '@mui/icons-material/Menu'
 
 interface Props {
   title: string
-  isLoggedIn: boolean
-  username?: string
+  isLoggedIn: boolean | undefined
+  username: string | undefined
 }
 
 const NavBar = ({ title, isLoggedIn, username }: Props) => {
@@ -34,7 +34,7 @@ const NavBar = ({ title, isLoggedIn, username }: Props) => {
           >
             {title}
           </Typography>
-          <Button color='primary'>{isLoggedIn ? username : 'Login'}</Button>
+          <Button color='primary' sx={{textTransform: 'none', fontSize: '1.25rem'}}>{isLoggedIn ? username : 'Login'}</Button>
         </Toolbar>
       </AppBar>
     </Box>

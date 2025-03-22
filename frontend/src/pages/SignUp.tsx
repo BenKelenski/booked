@@ -15,6 +15,7 @@ import {
   ColoredGoogleIcon,
 } from '../components/CustomIcons'
 import { useNavigate } from 'react-router'
+import { User } from '../common/types'
 
 const SignUp = () => {
   let navigate = useNavigate()
@@ -74,15 +75,16 @@ const SignUp = () => {
         console.error('Error creating user')
       } else {
         console.log('User successfully created')
-        const data = await response.json()
+        const data: User = await response.json()
         console.log(data)
-        navigate('/')
+        localStorage.setItem('user', JSON.stringify(data))
+        navigate('/account')
       }
     }
   }
 
   return (
-    <Container maxWidth='sm'>
+    <Container maxWidth='sm' sx={{ height: '100%'}}>
       <Stack
         direction='row'
         spacing={2}

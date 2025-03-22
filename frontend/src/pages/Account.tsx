@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Box,
   Container,
@@ -12,6 +12,7 @@ import {
 import AddCollectionCard from '../components/AddCollectionCard'
 import CollectionCard from '../components/CollectionCard'
 import NavBar from '../components/NavBar'
+import { User } from '../common/types'
 
 
 const modalStyle = {
@@ -29,6 +30,18 @@ const modalStyle = {
 
 const Account = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user')
+    if (userData) {
+      let parsedUserData: User = JSON.parse(userData)
+      console.log('Parsed user:', parsedUserData)
+      setUser(parsedUserData)
+    } else {
+      console.error('Error loading user data')
+    }
+  }, [])
 
   const openCreateModal = () => {
     setIsCreateModalOpen(true)
@@ -49,7 +62,7 @@ const Account = () => {
           <TextField id="collection-name-input" label="New Collection" variant="standard" />
         </Box>
       </Modal>
-      <NavBar title='Account' isLoggedIn={false} />
+      <NavBar title='Account' isLoggedIn={user?.is_active} username={user?.name} />
       <Grid
         container
         direction='column'
