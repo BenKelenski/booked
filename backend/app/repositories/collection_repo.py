@@ -18,6 +18,11 @@ class CollectionRepository:
         return self.session.exec(
             select(Collection).where(Collection.id == collection_id)
         ).first()
+    
+    def get_collections_by_user(self, user_id: int) -> list[CollectionPublic]:
+        return self.session.exec(
+            select(Collection).where(Collection.user_id == user_id)
+        ).all()
 
     def create_collection(self, collection: Collection) -> CollectionPublic:
         self.session.add(collection)

@@ -34,6 +34,12 @@ async def get_collection(
 ) -> CollectionPublic:
     return collectionService.get_collection(collection_id)
 
+@router.get("/user/{user_id}", response_model=list[CollectionPublic])
+async def get_collections_by_user(
+    user_id: int,
+    collectionService: Annotated[CollectionService, Depends(get_collection_service)],
+) -> list[CollectionPublic]:
+    return collectionService.get_collections_by_user(user_id)
 
 @router.post("/", response_model=CollectionPublic)
 async def create_collection(

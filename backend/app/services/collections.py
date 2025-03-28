@@ -20,6 +20,9 @@ class CollectionService:
         if collection is None:
             raise HTTPException(status_code=404, detail="Collection not found")
         return collection
+    
+    def get_collections_by_user(self, user_id: int) -> list[CollectionPublic]:
+        return self.collection_repo.get_collections_by_user(user_id)
 
     def create_collection(
         self, collection_request: CollectionCreate
