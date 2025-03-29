@@ -59,15 +59,22 @@ def test_create_collection_invalid(client: TestClient):
     )
     assert response.status_code == 422
 
+
 def test_get_all_collections(session: Session, client: TestClient):
     test_user = User(name="Darrow", hashed_password="secretpassword".encode())
     session.add(test_user)
     session.commit()
     session.refresh(test_user)
 
-    test_collection_1 = Collection(name="testCollection1", user_id=test_user.id, is_private=False)
-    test_collection_2 = Collection(name="testCollection2", user_id=test_user.id, is_private=False)
-    test_collection_3 = Collection(name="testCollection3", user_id=test_user.id, is_private=False)
+    test_collection_1 = Collection(
+        name="testCollection1", user_id=test_user.id, is_private=False
+    )
+    test_collection_2 = Collection(
+        name="testCollection2", user_id=test_user.id, is_private=False
+    )
+    test_collection_3 = Collection(
+        name="testCollection3", user_id=test_user.id, is_private=False
+    )
     session.add(test_collection_1)
     session.add(test_collection_2)
     session.add(test_collection_3)
@@ -82,13 +89,16 @@ def test_get_all_collections(session: Session, client: TestClient):
     assert data[1]["name"] == "testCollection2"
     assert data[2]["name"] == "testCollection3"
 
+
 def test_get_collection(session: Session, client: TestClient):
     test_user = User(name="Darrow", hashed_password="secretpassword".encode())
     session.add(test_user)
     session.commit()
     session.refresh(test_user)
 
-    test_collection = Collection(name="testCollection", user_id=test_user.id, is_private=False)
+    test_collection = Collection(
+        name="testCollection", user_id=test_user.id, is_private=False
+    )
     session.add(test_collection)
     session.commit()
     session.refresh(test_collection)
@@ -103,19 +113,22 @@ def test_get_collection(session: Session, client: TestClient):
     assert data["description"] is None
     assert data["is_private"] is False
 
+
 def test_delete_collection(session: Session, client: TestClient):
     test_user = User(name="Darrow", hashed_password="secretpassword".encode())
     session.add(test_user)
     session.commit()
     session.refresh(test_user)
 
-    test_collection = Collection(name="testCollection", user_id=test_user.id, is_private=False)
+    test_collection = Collection(
+        name="testCollection", user_id=test_user.id, is_private=False
+    )
     session.add(test_collection)
     session.commit()
     session.refresh(test_collection)
 
     response = client.delete(f"/collections/{test_collection.id}")
     data = response.json()
-    
+
     assert response.status_code == 200
     assert data == {"message": "Collection deleted successfully"}

@@ -10,6 +10,7 @@ from app.models.user import (
 from app.repositories.users_repo import UserRepository
 from app.services.users import UserSerivce
 from app.dependencies import SessionDep
+from app.repositories.collection_repo import CollectionRepository
 
 router = APIRouter(
     prefix="/users",
@@ -18,7 +19,7 @@ router = APIRouter(
 
 
 def get_user_serivce(session: SessionDep) -> UserSerivce:
-    return UserSerivce(UserRepository(session))
+    return UserSerivce(UserRepository(session), CollectionRepository(session))
 
 
 @router.get("/", response_model=list[UserPublic])
