@@ -8,10 +8,11 @@ from app.repositories.collection_repo import CollectionRepository
 
 
 class UserSerivce:
-    def __init__(self, user_repo: UserRepository, collection_repo: CollectionRepository):
+    def __init__(
+        self, user_repo: UserRepository, collection_repo: CollectionRepository
+    ):
         self.user_repo = user_repo
         self.collection_repo = collection_repo
-
 
     def get_all_users(self) -> list[UserPublic]:
         return self.user_repo.get_all_users()
@@ -32,31 +33,31 @@ class UserSerivce:
         # Create the 3 default collections: Reading, Read, and Want to Read
         created_ts: datetime = datetime.now()
         reading_collection = Collection(
-            name = "Reading",
-            description = "Books I'm currently reading",
-            is_private = False,
-            created_ts = created_ts,
-            user_id = new_user.id,
+            name="Reading",
+            description="Books I'm currently reading",
+            is_private=False,
+            created_ts=created_ts,
+            user_id=new_user.id,
         )
         read_collection = Collection(
-            name = "Read",
-            description = "Books I already completed read",
-            is_private = False,
-            created_ts = created_ts,
-            user_id = new_user.id,
+            name="Read",
+            description="Books I already completed read",
+            is_private=False,
+            created_ts=created_ts,
+            user_id=new_user.id,
         )
         want_to_read_collection = Collection(
-            name = "Want To Read",
-            description = "Books I want to read",
-            is_private = False,
-            created_ts = datetime.now(),
-            user_id = new_user.id,
+            name="Want To Read",
+            description="Books I want to read",
+            is_private=False,
+            created_ts=datetime.now(),
+            user_id=new_user.id,
         )
         # Save collections to DB
         self.collection_repo.create_collection(reading_collection)
         self.collection_repo.create_collection(read_collection)
         self.collection_repo.create_collection(want_to_read_collection)
-    
+
         return new_user
 
     def update_user(self, user_id: int, user_update: UserCreate) -> UserPublic:
@@ -78,4 +79,3 @@ class UserSerivce:
             return {"message": "User not found"}
         self.user_repo.delete_user(user)
         return {"message": "User deleted successfully"}
-
