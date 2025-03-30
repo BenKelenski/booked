@@ -1,19 +1,14 @@
+import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import {
-  Box,
-  Container,
-  Divider,
-  Grid2 as Grid,
-  Modal,
-  TextField,
-  Typography,
-} from '@mui/material'
-
-import AddCollectionCard from '../components/AddCollectionCard'
-import CollectionCard from '../components/CollectionCard'
-import NavBar from '../components/NavBar'
 import { User } from '../common/types'
+import { Box, Container, Divider, Grid2 as Grid, Modal, TextField, Typography } from '@mui/material'
+import NavBar from '../components/NavBar'
+import CollectionCard from '../components/CollectionCard'
+import AddCollectionCard from '../components/AddCollectionCard'
 
+export const Route = createFileRoute('/account')({
+  component: Account,
+})
 
 const modalStyle = {
   position: 'absolute',
@@ -28,12 +23,13 @@ const modalStyle = {
 };
 
 
-const Account = () => {
+function Account() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
+    console.log('User data:', userData)
     if (userData) {
       let parsedUserData: User = JSON.parse(userData)
       console.log('Parsed user:', parsedUserData)

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   Button,
   Card,
@@ -9,16 +8,21 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import {
   ColoredAppleIcon,
   ColoredFacebookIcon,
   ColoredGoogleIcon,
 } from '../components/CustomIcons'
-import { useNavigate } from 'react-router'
 import { User } from '../common/types'
+import { useState } from 'react'
 
-const SignUp = () => {
-  let navigate = useNavigate()
+export const Route = createFileRoute('/signup')({
+  component: SignUp,
+})
+
+function SignUp() {
+  const navigate = useNavigate()
 
   const [nameError, setNameError] = useState(false)
   const [nameErrorMessage, setNameErrorMessage] = useState('')
@@ -78,13 +82,13 @@ const SignUp = () => {
         const data: User = await response.json()
         console.log(data)
         localStorage.setItem('user', JSON.stringify(data))
-        navigate('/account')
+        navigate({ to: '/account' })
       }
     }
   }
 
   return (
-    <Container maxWidth='sm' sx={{ height: '100%'}}>
+    <Container maxWidth='sm' sx={{ height: '100%' }}>
       <Stack
         direction='row'
         spacing={2}
