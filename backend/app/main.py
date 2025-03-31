@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.dependencies import create_db_and_tables
 
 from .routers import books, users, collections
+from .config import settings
 
 
 @asynccontextmanager
@@ -13,7 +14,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="booked", lifespan=lifespan)
+app = FastAPI(title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json" , lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,9 +25,9 @@ app.add_middleware(
 )
 
 
-app.include_router(users.router)
-app.include_router(books.router)
-app.include_router(collections.router)
+app.include_router(users.router, prefix=settings.API_V1_STR)
+app.include_router(books.router, prefix=settings.API_V1_STR)
+app.include_router(collections.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/health")
