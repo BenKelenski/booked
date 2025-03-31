@@ -1,10 +1,19 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import { User } from '../common/types'
-import { Box, Container, Divider, Grid2 as Grid, Modal, TextField, Typography } from '@mui/material'
+import { Collection, User } from '../common/types'
+import {
+  Box,
+  Container,
+  Divider,
+  Grid2 as Grid,
+  Modal,
+  TextField,
+  Typography,
+} from '@mui/material'
 import NavBar from '../components/NavBar'
 import CollectionCard from '../components/CollectionCard'
 import AddCollectionCard from '../components/AddCollectionCard'
+import getCollectionsByUserId from '../api/CollectionService'
 
 export const Route = createFileRoute('/account')({
   component: Account,
@@ -20,12 +29,18 @@ const modalStyle = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-};
-
+}
 
 function Account() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
+  const [collections, setCollections] = useState<Collection[] | null>(null)
+
+  const fetchCollections = async (user: User) => {
+    const response = await getCollectionsByUserId(user.id)
+    console.log('Collections:', response)
+    setCollections(response)
+  }
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
@@ -34,6 +49,7 @@ function Account() {
       let parsedUserData: User = JSON.parse(userData)
       console.log('Parsed user:', parsedUserData)
       setUser(parsedUserData)
+      fetchCollections(parsedUserData)
     } else {
       console.error('Error loading user data')
     }
@@ -55,10 +71,18 @@ function Account() {
           <Typography variant='h6' component='h2'>
             Enter collection name
           </Typography>
-          <TextField id="collection-name-input" label="New Collection" variant="standard" />
+          <TextField
+            id='collection-name-input'
+            label='New Collection'
+            variant='standard'
+          />
         </Box>
       </Modal>
-      <NavBar title='Account' isLoggedIn={user?.is_active} username={user?.name} />
+      <NavBar
+        title='Account'
+        isLoggedIn={user?.is_active}
+        username={user?.name}
+      />
       <Grid
         container
         direction='column'
@@ -84,17 +108,13 @@ function Account() {
             }}
             columns={{ xs: 4, sm: 8, md: 12, lg: 12 }}
           >
+            {collections && collections?.map((collection: Collection) => (
+              <Grid key={collection.id} size={4}>
+                <CollectionCard title={collection.name} count={5} />
+              </Grid>
+            ))}
             <Grid size={4}>
-              <CollectionCard title='Reading' count={5} />
-            </Grid>
-            <Grid size={4}>
-              <CollectionCard title='Want to read' count={3} />
-            </Grid>
-            <Grid size={4}>
-              <CollectionCard title='Read' count={10} />
-            </Grid>
-            <Grid size={4}>
-              <AddCollectionCard openCreateModal={openCreateModal}/>
+              <AddCollectionCard openCreateModal={openCreateModal} />
             </Grid>
           </Grid>
         </Grid>

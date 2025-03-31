@@ -16,6 +16,7 @@ import {
 } from '../components/CustomIcons'
 import { User } from '../common/types'
 import { useState } from 'react'
+import createNewUser from '../api/UserService'
 
 export const Route = createFileRoute('/signup')({
   component: SignUp,
@@ -66,24 +67,10 @@ function SignUp() {
     const email = document.getElementById('email') as HTMLInputElement
     const password = document.getElementById('password') as HTMLInputElement
     if (validateInputs(name, email, password)) {
-      const response = await fetch('http://localhost:8000/users/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: name.value, password: password.value }),
-      })
-
-      if (!response.ok) {
-        console.error('Error creating user')
-      } else {
-        console.log('User successfully created')
-        const data: User = await response.json()
-        console.log(data)
-        localStorage.setItem('user', JSON.stringify(data))
-        navigate({ to: '/account' })
-      }
+      const response = await createNewUser({ name: name.value, password: password.value })
+      console.log(response)
+      localStorage.setItem('user', JSON.stringify(response))
+      navigate({ to: '/account' })
     }
   }
 
