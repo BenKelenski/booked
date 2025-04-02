@@ -1,3 +1,15 @@
+export interface CreateUserRequest {
+  name: string,
+  password: string,
+}
+
+export interface CreateCollectionRequest {
+  name: string
+  description?: string
+  is_private?: boolean
+  user_id: number
+}
+
 export interface User {
   id: number
   name: string
@@ -13,7 +25,7 @@ export interface Collection {
   is_private: boolean
   user_id: number
   created_at: string
-  // books: Book[]
+  books: Book[]
 }
 
 export interface Book {

@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import { Collection, User } from '../common/types'
+import { Collection, CreateCollectionRequest, User } from '../common/types'
 import {
   Box,
   Container,
@@ -13,7 +13,10 @@ import {
 import NavBar from '../components/NavBar'
 import CollectionCard from '../components/CollectionCard'
 import AddCollectionCard from '../components/AddCollectionCard'
-import getCollectionsByUserId from '../api/CollectionService'
+import {
+  createNewCollection,
+  getCollectionsByUserId,
+} from '../api/CollectionService'
 
 export const Route = createFileRoute('/account')({
   component: Account,
@@ -40,6 +43,12 @@ function Account() {
     const response = await getCollectionsByUserId(user.id)
     console.log('Collections:', response)
     setCollections(response)
+  }
+
+  const handleCreateCollection = async (
+    createCollectionRequest: CreateCollectionRequest
+  ) => {
+    const response = await createNewCollection(createCollectionRequest)
   }
 
   useEffect(() => {
@@ -108,11 +117,15 @@ function Account() {
             }}
             columns={{ xs: 4, sm: 8, md: 12, lg: 12 }}
           >
-            {collections && collections?.map((collection: Collection) => (
-              <Grid key={collection.id} size={4}>
-                <CollectionCard title={collection.name} count={5} />
-              </Grid>
-            ))}
+            {collections &&
+              collections?.map((collection: Collection) => (
+                <Grid key={collection.id} size={4}>
+                  <CollectionCard
+                    title={collection.name}
+                    count={collection.books.length}
+                  />
+                </Grid>
+              ))}
             <Grid size={4}>
               <AddCollectionCard openCreateModal={openCreateModal} />
             </Grid>

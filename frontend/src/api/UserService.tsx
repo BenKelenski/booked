@@ -1,12 +1,12 @@
 import axios from 'axios'
-import { User } from '../common/types'
+import { CreateUserRequest, User } from '../common/types'
 
 const client = axios.create({
   baseURL: 'http://localhost:8000/api/v1',
   timeout: 1000,
 })
 
-const createNewUser = async (user_data: any): Promise<User> => {
+const createNewUser = async (user_data: CreateUserRequest): Promise<User> => {
   return client
     .post('/users', user_data)
     .then((response) => {

@@ -14,9 +14,9 @@ import {
   ColoredFacebookIcon,
   ColoredGoogleIcon,
 } from '../components/CustomIcons'
-import { User } from '../common/types'
 import { useState } from 'react'
 import createNewUser from '../api/UserService'
+import { CreateUserRequest } from '../common/types'
 
 export const Route = createFileRoute('/signup')({
   component: SignUp,
@@ -67,7 +67,11 @@ function SignUp() {
     const email = document.getElementById('email') as HTMLInputElement
     const password = document.getElementById('password') as HTMLInputElement
     if (validateInputs(name, email, password)) {
-      const response = await createNewUser({ name: name.value, password: password.value })
+      let newUserData: CreateUserRequest ={
+        name: name.value,
+        password: password.value,
+      }
+      const response = await createNewUser(newUserData)
       console.log(response)
       localStorage.setItem('user', JSON.stringify(response))
       navigate({ to: '/account' })
