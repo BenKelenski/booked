@@ -31,15 +31,15 @@ async def get_all_collections(
 async def get_collection(
     collection_id: int,
     collectionService: Annotated[CollectionService, Depends(get_collection_service)],
-) -> CollectionPublic:
+) -> CollectionPublicWithBooks:
     return collectionService.get_collection(collection_id)
 
 
-@router.get("/user/{user_id}", response_model=list[CollectionPublic])
+@router.get("/user/{user_id}", response_model=list[CollectionPublicWithBooks])
 async def get_collections_by_user(
     user_id: int,
     collectionService: Annotated[CollectionService, Depends(get_collection_service)],
-) -> list[CollectionPublic]:
+) -> list[CollectionPublicWithBooks]:
     return collectionService.get_collections_by_user(user_id)
 
 
