@@ -3,6 +3,7 @@ import pytest
 from sqlmodel import SQLModel, Session, create_engine
 from sqlmodel.pool import StaticPool
 
+from app.config import settings
 from app.dependencies import get_session
 from app.main import app
 from app.models.user import User
@@ -30,7 +31,8 @@ def client_fixture(session: Session):
 
 def test_create_user(client: TestClient):
     response = client.post(
-        "/users", json={"name": "ben", "password": "$up3rS3cretP4ss"}
+        f"{settings.API_V1_STR}/users",
+        json={"name": "ben", "password": "$up3rS3cretP4ss"},
     )
     data = response.json()
 
@@ -43,17 +45,21 @@ def test_create_user(client: TestClient):
 
 
 def test_create_user_incomplete(client: TestClient):
-    response = client.post("/users", json={"name": "benNoPass"})
+    response = client.post(f"{settings.API_V1_STR}/users", json={"name": "benNoPass"})
     assert response.status_code == 422
 
 
 def test_create_user_invalid(client: TestClient):
-    response = client.post("/users", json={"name": "benBadType", "password": True})
+    response = client.post(
+        f"{settings.API_V1_STR}/users", json={"name": "benBadType", "password": True}
+    )
     assert response.status_code == 422
 
 
 def test_create_user_invalid_short_password(client: TestClient):
-    response = client.post("/users", json={"name": "ben", "password": "short"})
+    response = client.post(
+        f"{settings.API_V1_STR}/users", json={"name": "ben", "password": "short"}
+    )
     assert response.status_code == 422
 
 
@@ -64,7 +70,7 @@ def test_get_all_users(session: Session, client: TestClient):
     session.add(user_2)
     session.commit()
 
-    response = client.get("/users")
+    response = client.get(f"{settings.API_V1_STR}/users")
     data = response.json()
 
     assert response.status_code == 200
@@ -86,7 +92,7 @@ def test_get_user(session: Session, client: TestClient):
     session.add(user_1)
     session.commit()
 
-    response = client.get(f"/users/{user_1.id}")
+    response = client.get(f"{settings.API_V1_STR}/users/{user_1.id}")
     data = response.json()
 
     assert response.status_code == 200
@@ -103,7 +109,9 @@ def test_update_user_name(session: Session, client: TestClient):
     session.add(user_1)
     session.commit()
 
-    response = client.patch(f"/users/{user_1.id}", json={"name": "benjamin"})
+    response = client.patch(
+        f"{settings.API_V1_STR}/users/{user_1.id}", json={"name": "benjamin"}
+    )
     data = response.json()
 
     assert response.status_code == 200
@@ -118,7 +126,8 @@ def test_update_user_password(session: Session, client: TestClient):
     session.commit()
 
     response = client.patch(
-        f"/users/{user_1.id}", json={"name": "benjamin", "password": "newpassword"}
+        f"{settings.API_V1_STR}/users/{user_1.id}",
+        json={"name": "benjamin", "password": "newpassword"},
     )
     data = response.json()
 
@@ -133,7 +142,7 @@ def test_delete_user(session: Session, client: TestClient):
     session.add(user_1)
     session.commit()
 
-    response = client.delete(f"/users/{user_1.id}")
+    response = client.delete(f"{settings.API_V1_STR}/users/{user_1.id}")
 
     user_in_db = session.get(User, user_1.id)
 

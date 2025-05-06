@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 import pytest
 from sqlmodel import SQLModel, Session, StaticPool, create_engine
 
+from app.config import settings
 from app.dependencies import get_session
 from app.main import app
 from app.models.user import User
@@ -35,7 +36,8 @@ def test_create_collection(session: Session, client: TestClient):
     session.refresh(test_user)
 
     response = client.post(
-        "/collections/", json={"name": "testCollection", "user_id": test_user.id}
+        f"{settings.API_V1_STR}/collections/",
+        json={"name": "testCollection", "user_id": test_user.id},
     )
 
     data = response.json()
@@ -49,13 +51,16 @@ def test_create_collection(session: Session, client: TestClient):
 
 
 def test_create_collection_incomplete(client: TestClient):
-    response = client.post("/collections/", json={"name": "testCollection"})
+    response = client.post(
+        f"{settings.API_V1_STR}/collections/", json={"name": "testCollection"}
+    )
     assert response.status_code == 422
 
 
 def test_create_collection_invalid(client: TestClient):
     response = client.post(
-        "/collections/", json={"name": "testCollection", "user_id": None}
+        f"{settings.API_V1_STR}/collections/",
+        json={"name": "testCollection", "user_id": None},
     )
     assert response.status_code == 422
 
@@ -80,7 +85,7 @@ def test_get_all_collections(session: Session, client: TestClient):
     session.add(test_collection_3)
     session.commit()
 
-    response = client.get("/collections/")
+    response = client.get(f"{settings.API_V1_STR}/collections/")
     data = response.json()
 
     assert response.status_code == 200
@@ -103,7 +108,7 @@ def test_get_collection(session: Session, client: TestClient):
     session.commit()
     session.refresh(test_collection)
 
-    response = client.get(f"/collections/{test_collection.id}")
+    response = client.get(f"{settings.API_V1_STR}/collections/{test_collection.id}")
     data = response.json()
 
     assert response.status_code == 200
@@ -127,7 +132,7 @@ def test_delete_collection(session: Session, client: TestClient):
     session.commit()
     session.refresh(test_collection)
 
-    response = client.delete(f"/collections/{test_collection.id}")
+    response = client.delete(f"{settings.API_V1_STR}/collections/{test_collection.id}")
     data = response.json()
 
     assert response.status_code == 200
