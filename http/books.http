@@ -1,0 +1,20 @@
+@baseUrl=http://localhost:8000
+
+### Create a new book
+POST {{baseUrl}}/api/v1/books/
+Content-Type: application/json
+
+{
+  "title": "book1",
+  "author": "author1",
+  "collection_id": 1
+}
+
+### Get all books
+GET {{baseUrl}}/api/v1/books
+
+### Get a book by ID
+GET {{baseUrl}}/api/v1/books/1
+
+### Delete a book by ID
+DELETE {{baseUrl}}/api/v1/books/1

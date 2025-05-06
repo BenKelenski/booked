@@ -1,0 +1,23 @@
+@baseUrl=http://localhost:8000
+
+### Create a new collection
+POST {{baseUrl}}/api/v1/collections/
+Content-Type: application/json
+
+{
+  "name": "collection1",
+  "user_id": 1
+}
+
+### Get all collections
+GET {{baseUrl}}/api/v1/collections
+
+### Get a collection by ID
+GET {{baseUrl}}/api/v1/collections/1
+
+### Get all collections for a user
+GET {{baseUrl}}/api/v1/collections/user/1
+
+### Delete a collection by ID
+DELETE {{baseUrl}}/api/v1/collections/1
+

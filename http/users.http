@@ -1,0 +1,29 @@
+@baseUrl=http://localhost:8000
+
+### Create a new user
+POST {{baseUrl}}/api/v1/users/ 
+Content-Type: application/json
+
+{
+  "name": "benbadguy",
+  "password": "hohiwoeworw",
+  "is_admin": false
+}
+
+### Get all users
+GET {{baseUrl}}/api/v1/users
+
+### Get a user by ID
+GET {{baseUrl}}/api/v1/users/1
+
+### Update a user by ID
+PATCH {{baseUrl}}/api/v1/users/1
+Content-Type: application/json
+
+{
+  "name": "ben2",
+  "password": "new"
+}
+
+### Delete a user by ID
+DELETE {{baseUrl}}/api/v1/users/1
