@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends
 
 from app.models.book import BookCreate, BookPublic, BookPublicWithCollection
 from app.dependencies import SessionDep
-from app.repositories.books_repo import BookRepository
-from app.services.books import BookService
+from app.repositories.book_repo import BookRepository
+from app.services.book_service import BookService
 
 router = APIRouter(
     prefix="/books",

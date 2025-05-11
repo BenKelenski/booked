@@ -8,7 +8,7 @@ from app.models.collection import (
 )
 from app.dependencies import SessionDep
 from app.repositories.collection_repo import CollectionRepository
-from app.services.collections import CollectionService
+from app.services.collection_service import CollectionService
 
 router = APIRouter(
     prefix="/collections",

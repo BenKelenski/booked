@@ -7,8 +7,8 @@ from app.models.user import (
     UserPublicWithCollections,
     UserUpdate,
 )
-from app.repositories.users_repo import UserRepository
-from app.services.users import UserSerivce
+from app.repositories.user_repo import UserRepository
+from app.services.user_service import UserService
 from app.dependencies import SessionDep
 from app.repositories.collection_repo import CollectionRepository
 
@@ -18,20 +18,20 @@ router = APIRouter(
 )
 
 
-def get_user_serivce(session: SessionDep) -> UserSerivce:
-    return UserSerivce(UserRepository(session), CollectionRepository(session))
+def get_user_service(session: SessionDep) -> UserService:
+    return UserService(UserRepository(session), CollectionRepository(session))
 
 
 @router.get("/", response_model=list[UserPublic])
 async def get_all_users(
-    userService: Annotated[UserSerivce, Depends(get_user_serivce)],
+    userService: Annotated[UserService, Depends(get_user_service)],
 ) -> list[UserPublic]:
     return userService.get_all_users()
 
 
 @router.get("/{user_id}", response_model=UserPublicWithCollections)
 async def get_user(
-    user_id: int, userService: Annotated[UserSerivce, Depends(get_user_serivce)]
+    user_id: int, userService: Annotated[UserService, Depends(get_user_service)]
 ) -> UserPublic:
     return userService.get_user(user_id)
 
@@ -39,7 +39,7 @@ async def get_user(
 @router.post("/", response_model=UserPublic)
 async def create_user(
     user_request: UserCreate,
-    userService: Annotated[UserSerivce, Depends(get_user_serivce)],
+    userService: Annotated[UserService, Depends(get_user_service)],
 ) -> UserPublic:
     return userService.create_user(user_request)
 
@@ -48,13 +48,13 @@ async def create_user(
 def update_user(
     user_id: int,
     user_update: UserUpdate,
-    userService: Annotated[UserSerivce, Depends(get_user_serivce)],
+    userService: Annotated[UserService, Depends(get_user_service)],
 ) -> UserPublic:
     return userService.update_user(user_id, user_update)
 
 
 @router.delete("/{user_id}")
 async def delete_user(
-    user_id: int, userService: Annotated[UserSerivce, Depends(get_user_serivce)]
+    user_id: int, userService: Annotated[UserService, Depends(get_user_service)]
 ) -> dict[str, str]:
     return userService.delete_user(user_id)

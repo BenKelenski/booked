@@ -13,11 +13,11 @@ class CollectionBase(SQLModel):
     description: str | None = Field(default=None)
     is_private: bool
     created_ts: datetime = Field(default_factory=datetime.now, nullable=False)
-    user_id: int = Field(foreign_key="users.id")
+    user_id: int = Field(foreign_key="user.id")
 
 
 class Collection(CollectionBase, table=True):
-    __tablename__ = "collections"
+    # __tablename__ = "collections"
     id: int | None = Field(default=None, primary_key=True)
 
     user: "User" = Relationship(back_populates="collections")

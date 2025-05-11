@@ -11,11 +11,11 @@ class BookBase(SQLModel):
     author: str
     collected_ts: datetime = Field(default_factory=datetime.now, nullable=False)
 
-    collection_id: int = Field(foreign_key="collections.id")
+    collection_id: int = Field(foreign_key="collection.id")
 
 
 class Book(BookBase, table=True):
-    __tablename__ = "books"
+    # __tablename__ = "books"
     id: int | None = Field(default=None, primary_key=True)
 
     collection: "Collection" = Relationship(back_populates="books")

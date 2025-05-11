@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.dependencies import create_db_and_tables
 
-from .routers import books, users, collections
+from .routers import book_routes, user_routes, collection_routes
 from .config import settings
 
 
@@ -29,9 +29,9 @@ app.add_middleware(
 )
 
 
-app.include_router(users.router, prefix=settings.API_V1_STR)
-app.include_router(books.router, prefix=settings.API_V1_STR)
-app.include_router(collections.router, prefix=settings.API_V1_STR)
+app.include_router(user_routes.router, prefix=settings.API_V1_STR)
+app.include_router(book_routes.router, prefix=settings.API_V1_STR)
+app.include_router(collection_routes.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/health")

@@ -23,7 +23,7 @@ class UserUpdate(UserBase):
 
 
 class User(UserBase, table=True):
-    __tablename__ = "users"
+    # __tablename__ = "users"
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: bytes = Field()
 

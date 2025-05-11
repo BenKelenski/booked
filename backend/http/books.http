@@ -16,5 +16,8 @@ GET {{baseUrl}}/api/v1/books
 ### Get a book by ID
 GET {{baseUrl}}/api/v1/books/1
 
+### Search for a book
+GET {{baseUrl}}/api/v1/books/search/?query=flowers+inauthor:keyes
+
 ### Delete a book by ID
 DELETE {{baseUrl}}/api/v1/books/1

@@ -4,8 +4,8 @@ CREATE DATABASE test_db;
 
 -- CREATE SCHEMA booked;
 
--- Creates users table
-CREATE TABLE users (
+-- Creates user table
+CREATE TABLE "user" (
     id SERIAL PRIMARY KEY,
     name VARCHAR(40) NOT NULL,
     hashed_password BYTEA NOT NULL,
@@ -14,23 +14,23 @@ CREATE TABLE users (
     is_admin BOOLEAN DEFAULT FALSE
 );
 
-INSERT INTO users (name, hashed_password, is_active, is_admin)
+INSERT INTO "user" (name, hashed_password, is_active, is_admin)
 VALUES  ('Ben', convert_to('password', 'UTF-8'), TRUE, TRUE),
         ('Megan', convert_to('secretpass', 'UTF-8'), TRUE, TRUE),
         ('Chip', convert_to('treatsplz', 'UTF-8'), TRUE, TRUE),
         ('Libby', convert_to('iluvsqueakyball', 'UTF-8'), TRUE, TRUE),
         ('Lou Lou', convert_to('feedmehumans', 'UTF-8'), TRUE, TRUE);
 
-CREATE TABLE collections (
+CREATE TABLE collection (
     id SERIAL PRIMARY KEY,
     name VARCHAR(40) NOT NULL,
     description TEXT,
     created_ts TIMESTAMPTZ DEFAULT NOW(),
     is_private BOOLEAN DEFAULT FALSE,
-    user_id INT REFERENCES users(id)
+    user_id INT REFERENCES "user"(id)
 );
 
-INSERT INTO collections (name, description, user_id)
+INSERT INTO collection (name, description, user_id)
 VALUES  ('Reading', 'Books I''m currently reading', 1),
         ('Want To Read', 'Collection of books I plan to read', 1),
         ('Read', 'Books I''ve already finished', 1),
@@ -39,20 +39,20 @@ VALUES  ('Reading', 'Books I''m currently reading', 1),
         ('Libby''s Collection', 'This is Libby''s collection', 4),
         ('Lou Lou''s Collection', 'This is Lou Lou''s collection', 5);
 
-UPDATE collections
+UPDATE collection
 SET is_private = TRUE
 WHERE id = 1 OR id = 2;
 
-CREATE TABLE books (
+CREATE TABLE book (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     author VARCHAR(100) NOT NULL,
     description TEXT,
     collected_ts TIMESTAMPTZ DEFAULT NOW(),
-    collection_id INT REFERENCES collections(id)
+    collection_id INT REFERENCES collection(id)
 );
 
-INSERT INTO books (title, author, description, collection_id)
+INSERT INTO book (title, author, description, collection_id)
 VALUES  ('The Great Gatsby', 'F. Scott Fitzgerald', 'A classic novel about the American Dream', 1),
         ('The Catcher in the Rye', 'J.D. Salinger', 'A novel about teenage angst', 1),
         ('The Bell Jar', 'Sylvia Plath', 'A novel about a young', 2),

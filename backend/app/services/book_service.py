@@ -1,6 +1,8 @@
 from fastapi import HTTPException
+
+from app.client import get_search_books
 from app.models.book import Book, BookCreate, BookPublic, BookPublicWithCollection
-from app.repositories.books_repo import BookRepository
+from app.repositories.book_repo import BookRepository
 
 
 class BookService:
@@ -20,6 +22,9 @@ class BookService:
         book = Book.model_validate(book_request)
         self.book_repo.create_book(book)
         return book
+
+    def search_google_books(self, query: str) -> str:
+        return get_search_books(query)
 
     def delete_book(self, book_id: int) -> dict[str, str]:
         book = self.book_repo.get_book(book_id)

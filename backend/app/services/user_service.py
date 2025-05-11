@@ -2,12 +2,12 @@ from datetime import datetime
 from fastapi import HTTPException
 from app.models.collection import Collection
 from app.models.user import User, UserCreate, UserPublic, UserPublicWithCollections
-from app.repositories.users_repo import UserRepository
+from app.repositories.user_repo import UserRepository
 from app.utils.utils import hash_and_salt_password
 from app.repositories.collection_repo import CollectionRepository
 
 
-class UserSerivce:
+class UserService:
     def __init__(
         self, user_repo: UserRepository, collection_repo: CollectionRepository
     ):
